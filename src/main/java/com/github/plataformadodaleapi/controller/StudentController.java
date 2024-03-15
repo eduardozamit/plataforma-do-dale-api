@@ -1,53 +1,52 @@
 package com.github.plataformadodaleapi.controller;
 
-import com.github.plataformadodaleapi.dto.StudentDTOQuery;
 import com.github.plataformadodaleapi.dto.request.StudentRequestDTO;
-import com.github.plataformadodaleapi.dto.response.StudentCompetenceResponse;
 import com.github.plataformadodaleapi.dto.response.StudentResponse;
 import com.github.plataformadodaleapi.entity.Student;
 import com.github.plataformadodaleapi.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/students")
 public class StudentController {
     private StudentService service;
 
+    public StudentController(StudentService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public List<StudentResponse> findAllStudents() {
+        return service.findAllStudents();
+    }
+
+    @GetMapping("/with-competence/{id}")
+    public ResponseEntity<Student> findStudentWithCompetenceById(@PathVariable long id) {
+        return service.listStudentWithCompetenceById(id).isPresent() ? ResponseEntity.ok(service.listStudentWithCompetenceById(id).get()) : ResponseEntity.badRequest().build();
+    }
+
     @PostMapping("/salvar")
     public Student saveStudent(@RequestBody StudentRequestDTO studentRequestDTO) {
         return service.saveStudent(studentRequestDTO);
     }
 
-    @GetMapping
-    public List<StudentResponse> findAll() {
-        return service.findAll();
-    }
-
-    @GetMapping("/with-competence/{id}")
-    public List<StudentDTOQuery> findStudentCompetenceById(@PathVariable Long id) {
-        return service.findStudentWithCompetenceById(id);
-    }
-
-    @GetMapping("/teste/{id}")
-    public StudentCompetenceResponse listStudentCompetenceById(@PathVariable Long id) {
-        return service.findStudentCompetenceById(id);
-    }
-
-    @PostMapping("/salvar-competencia")
-    public Student saveStudentCompetence(@RequestBody StudentRequestDTO studentRequestDTO, @RequestParam Long idCompetence) {
-        return service.saveStudentCompetence(studentRequestDTO, idCompetence);
-    }
-
     @PostMapping("/adicionar-competencia")
     public Student addCompetence(@RequestParam("student") String studentId, @RequestParam("competence") String idCompetence) {
-        return service.addCompetence(Long.parseLong(studentId), Long.parseLong(idCompetence));
+        return service.addCompetenceToStudent(studentId, idCompetence);
     }
 
-    @Autowired
-    public StudentController(StudentService service) {
-        this.service = service;
+    @PostMapping("/adicionar-competencia/mais-de-uma")
+    public ResponseEntity<Student> addCompetences(@RequestParam("student") String studentId, @RequestParam("competence") List<String> idsCompetences) {
+        Optional<Student> student = service.addManyCompetencesToStudent(studentId, idsCompetences);
+        return student.isPresent() ? ResponseEntity.ok(student.get()) : ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/filtro")
+    public List<Student> findStudentsByFilter(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age") Integer age) {
+        return service.listStudentsByFilter(name, age);
     }
 }
