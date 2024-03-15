@@ -1,12 +1,11 @@
 package com.github.plataformadodaleapi.service;
 
-import com.github.plataformadodaleapi.dto.StudentDTOQuery;
 import com.github.plataformadodaleapi.dto.request.StudentRequestDTO;
-import com.github.plataformadodaleapi.dto.response.StudentCompetenceResponse;
 import com.github.plataformadodaleapi.dto.response.StudentResponse;
 import com.github.plataformadodaleapi.entity.Competence;
 import com.github.plataformadodaleapi.entity.Student;
 import com.github.plataformadodaleapi.repository.CompetenceRepository;
+import com.github.plataformadodaleapi.repository.StudentCustomRepository;
 import com.github.plataformadodaleapi.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,30 +16,23 @@ import java.util.Optional;
 
 @Service
 public class StudentService {
-    private StudentRepository repository;
+    private StudentRepository studentRepository;
     private CompetenceRepository competenceRepository;
+    private StudentCustomRepository studentCustomRepository;
 
-    public StudentService(StudentRepository repository, CompetenceRepository competenceRepository) {
-        this.repository = repository;
+    public StudentService(StudentRepository studentRepository, CompetenceRepository competenceRepository, StudentCustomRepository studentCustomRepository) {
+        this.studentRepository = studentRepository;
         this.competenceRepository = competenceRepository;
+        this.studentCustomRepository = studentCustomRepository;
     }
 
     public Student saveStudent(StudentRequestDTO studentRequestDTO) {
         Student student = new Student(studentRequestDTO);
-        return repository.save(student);
+        return studentRepository.save(student);
     }
 
-    public Student saveStudentCompetence(StudentRequestDTO studentRequestDTO, long idCompetence) {
-        Student student = new Student(studentRequestDTO);
-        return addCompetence(student.getId(), idCompetence);
-    }
-
-    public StudentCompetenceResponse findStudentCompetenceById(long id) {
-        return repository.listStudentCompetenceById(id);
-    }
-
-    public List<StudentResponse> findAll() {
-        List<Student> studentsList = repository.findAll();
+    public List<StudentResponse> findAllStudents() {
+        List<Student> studentsList = studentRepository.findAll();
         List<StudentResponse> students = new ArrayList<>();
         for (Student studentIndex : studentsList) {
             StudentResponse student = new StudentResponse(studentIndex);
@@ -49,18 +41,37 @@ public class StudentService {
         return students;
     }
 
-    public List<StudentDTOQuery> findStudentWithCompetenceById(long id) {
-        return repository.findStudentCompetence(id);
+    public Student addCompetenceToStudent(String studentId, String idCompetence) {
+        Optional<Student> student = studentRepository.findById(Long.parseLong(studentId));
+        if (student.isPresent()) {
+            Optional<Competence> competenceOptional = competenceRepository.findById(Long.parseLong(idCompetence));
+            competenceOptional.ifPresent(competence -> student.get().getCompetences().add(competence));
+            return studentRepository.save(student.get());
+        }
+        return null;
     }
 
-    public Student addCompetence(long studentId, long idCompetence) {
-        Optional<Student> student = repository.findById(studentId);
-        Optional<Competence> competence = competenceRepository.findById(idCompetence);
-        System.out.println(student.get().toString());
-        System.out.println(competence.get().toString());
-        if (student.isPresent() && competence.isPresent()) {
-            student.get().getCompetences().add(competence.get());
+    public Optional<Student> addManyCompetencesToStudent(String studentId, List<String> listOfCompetences) {
+        Optional<Student> student = studentRepository.findById(Long.parseLong(studentId));
+        if (student.isPresent()) {
+            List<Competence> competences = new ArrayList<>();
+            for (String id : listOfCompetences) {
+                Optional<Competence> competence = competenceRepository.findById(Long.parseLong(id));
+                if (competence.isPresent()) {
+                    competences.add(competence.get());
+                }
+            }
+            student.get().getCompetences().addAll(competences);
+            return student;
         }
-        return repository.save(student.get());
+        return Optional.empty();
+    }
+
+    public Optional<Student> listStudentWithCompetenceById(long studentId) {
+        return studentRepository.listStudentCompetenceById(studentId);
+    }
+
+    public List<Student> listStudentsByFilter(String name, Integer age) {
+        return studentCustomRepository.findCustom(name, age);
     }
 }
