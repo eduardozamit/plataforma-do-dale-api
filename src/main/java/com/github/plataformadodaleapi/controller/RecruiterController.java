@@ -35,7 +35,7 @@ public class RecruiterController {
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Recruiter> createRecruiter(@RequestBody RecruiterRequestDTO requestDto) {
         Recruiter recruiter = recruiterService.createRecruiter(requestDto);
         return recruiter != null
@@ -55,5 +55,23 @@ public class RecruiterController {
     public ResponseEntity<Void> deleteRecruiter(@PathVariable Long id) {
         recruiterService.deleteRecruiter(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/add-favorite-student")
+    public ResponseEntity<Recruiter> favoriteStudent(@RequestParam("recruiter") Long recruiterId,
+                                                     @RequestParam("student") Long studentId) {
+        Recruiter recruiter = recruiterService.favoriteStudentById(recruiterId, studentId);
+        return recruiter != null ? ResponseEntity.ok(recruiter) : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PostMapping("/disfavor-student")
+    public ResponseEntity<Recruiter> disfavorStudent(@RequestParam("recruiter") Long recruiterId,
+                                                     @RequestParam("student") Long studentId) {
+        Recruiter updatedRecruiter = recruiterService.disfavorStudentById(recruiterId, studentId);
+        if (updatedRecruiter != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(updatedRecruiter);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
