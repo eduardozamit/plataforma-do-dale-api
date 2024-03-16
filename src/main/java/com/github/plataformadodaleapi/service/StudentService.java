@@ -63,7 +63,7 @@ public class StudentService {
     }
 
     public Optional<Student> getStudentWithCompetenceById(long studentId) {
-        return studentRepository.getStudentCompetenceById(studentId);
+        return studentRepository.findById(studentId);
     }
 
     public List<Student> getAllStudentsWithCompetence() {
