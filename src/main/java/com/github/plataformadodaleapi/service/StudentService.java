@@ -3,6 +3,7 @@ package com.github.plataformadodaleapi.service;
 import com.github.plataformadodaleapi.dto.request.StudentRequestDTO;
 import com.github.plataformadodaleapi.dto.response.StudentResponse;
 import com.github.plataformadodaleapi.entity.Competence;
+import com.github.plataformadodaleapi.entity.GCTrail;
 import com.github.plataformadodaleapi.entity.Student;
 import com.github.plataformadodaleapi.repository.CompetenceRepository;
 import com.github.plataformadodaleapi.repository.StudentCustomRepository;
@@ -71,7 +72,7 @@ public class StudentService {
         return studentRepository.listStudentCompetenceById(studentId);
     }
 
-    public List<Student> listStudentsByFilter(String name, Integer age) {
-        return studentCustomRepository.findCustom(name, age);
+    public List<Student> listStudentsByFilter(String name, Integer age, GCTrail gcTrail) {
+        return studentCustomRepository.findCustom(name, age, gcTrail);
     }
 }
