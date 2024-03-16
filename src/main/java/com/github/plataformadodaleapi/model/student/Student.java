@@ -1,5 +1,6 @@
 package com.github.plataformadodaleapi.model.student;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.plataformadodaleapi.student.dto.request.StudentRequestDTO;
 import com.github.plataformadodaleapi.model.recruiter.Recruiter;
@@ -51,7 +52,7 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "competence_id")
     )
     private List<Competence> competences;
-    @JsonManagedReference
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruiter_id")
     private Recruiter recruiter;
