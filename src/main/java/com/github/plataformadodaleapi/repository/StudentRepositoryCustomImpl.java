@@ -1,7 +1,7 @@
 package com.github.plataformadodaleapi.repository;
 
-import com.github.plataformadodaleapi.entity.Competence;
-import com.github.plataformadodaleapi.entity.Student;
+import com.github.plataformadodaleapi.model.student.Competence;
+import com.github.plataformadodaleapi.model.student.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;

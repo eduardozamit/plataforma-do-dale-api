@@ -1,7 +1,8 @@
-package com.github.plataformadodaleapi.entity;
+package com.github.plataformadodaleapi.model.student;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.github.plataformadodaleapi.dto.request.StudentRequestDTO;
+import com.github.plataformadodaleapi.student.dto.request.StudentRequestDTO;
+import com.github.plataformadodaleapi.model.recruiter.Recruiter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,6 +51,10 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "competence_id")
     )
     private List<Competence> competences;
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recruiter_id")
+    private Recruiter recruiter;
 
     public Student(StudentRequestDTO studentRequestDTO) {
         this.name = studentRequestDTO.name();

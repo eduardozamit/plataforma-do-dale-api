@@ -1,4 +1,4 @@
-package com.github.plataformadodaleapi.entity;
+package com.github.plataformadodaleapi.model.student;
 
 public enum GCTrail {
     PROGRAMACAO("Programacão"),

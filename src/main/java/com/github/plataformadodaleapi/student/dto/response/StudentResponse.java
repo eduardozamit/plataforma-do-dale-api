@@ -1,8 +1,8 @@
-package com.github.plataformadodaleapi.dto.response;
+package com.github.plataformadodaleapi.student.dto.response;
 
-import com.github.plataformadodaleapi.entity.EducationLevel;
-import com.github.plataformadodaleapi.entity.GCTrail;
-import com.github.plataformadodaleapi.entity.Student;
+import com.github.plataformadodaleapi.model.student.EducationLevel;
+import com.github.plataformadodaleapi.model.student.GCTrail;
+import com.github.plataformadodaleapi.model.student.Student;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
-package com.github.plataformadodaleapi.dto.request;
+package com.github.plataformadodaleapi.student.dto.request;
 
-import com.github.plataformadodaleapi.entity.EducationLevel;
-import com.github.plataformadodaleapi.entity.GCTrail;
+import com.github.plataformadodaleapi.model.student.EducationLevel;
+import com.github.plataformadodaleapi.model.student.GCTrail;
 
 import java.util.List;
 

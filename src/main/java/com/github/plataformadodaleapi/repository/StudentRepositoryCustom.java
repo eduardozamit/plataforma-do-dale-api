@@ -1,6 +1,6 @@
 package com.github.plataformadodaleapi.repository;
 
-import com.github.plataformadodaleapi.entity.Student;
+import com.github.plataformadodaleapi.model.student.Student;
 
 import java.util.List;
 

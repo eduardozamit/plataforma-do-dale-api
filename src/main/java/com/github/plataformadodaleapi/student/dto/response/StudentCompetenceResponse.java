@@ -1,6 +1,6 @@
-package com.github.plataformadodaleapi.dto.response;
+package com.github.plataformadodaleapi.student.dto.response;
 
-import com.github.plataformadodaleapi.entity.Student;
+import com.github.plataformadodaleapi.model.student.Student;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -1,6 +1,6 @@
 package com.github.plataformadodaleapi.repository;
 
-import com.github.plataformadodaleapi.entity.GCTrail;
+import com.github.plataformadodaleapi.model.student.GCTrail;
 import lombok.Data;
 
 import java.util.List;

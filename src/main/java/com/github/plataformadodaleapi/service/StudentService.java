@@ -1,9 +1,9 @@
 package com.github.plataformadodaleapi.service;
 
-import com.github.plataformadodaleapi.dto.request.StudentRequestDTO;
-import com.github.plataformadodaleapi.dto.response.StudentResponse;
-import com.github.plataformadodaleapi.entity.Competence;
-import com.github.plataformadodaleapi.entity.Student;
+import com.github.plataformadodaleapi.student.dto.request.StudentRequestDTO;
+import com.github.plataformadodaleapi.student.dto.response.StudentResponse;
+import com.github.plataformadodaleapi.model.student.Competence;
+import com.github.plataformadodaleapi.model.student.Student;
 import com.github.plataformadodaleapi.repository.CompetenceRepository;
 import com.github.plataformadodaleapi.repository.StudentFilterParam;
 import com.github.plataformadodaleapi.repository.StudentRepository;
