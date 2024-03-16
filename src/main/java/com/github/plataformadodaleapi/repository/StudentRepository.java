@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s FROM Student s JOIN FETCH s.competences")
-    List<Student> listStudentsCompetences();
+    List<Student> listAllStudentsCompetences();
 
     @Query("SELECT s FROM Student s JOIN FETCH s.competences WHERE s.id = :student_id")
     Optional<Student> listStudentCompetenceById(@Param("student_id") long studentId);
