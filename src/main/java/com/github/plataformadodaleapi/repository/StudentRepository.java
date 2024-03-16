@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<Student, Long> , StudentRepositoryCustom{
     @Query("SELECT s FROM Student s JOIN FETCH s.competences")
     List<Student> listAllStudentsCompetences();
 
