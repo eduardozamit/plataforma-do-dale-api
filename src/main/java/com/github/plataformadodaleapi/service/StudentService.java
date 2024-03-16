@@ -1,12 +1,12 @@
 package com.github.plataformadodaleapi.service;
 
-import com.github.plataformadodaleapi.student.dto.request.StudentRequestDTO;
-import com.github.plataformadodaleapi.student.dto.response.StudentResponse;
 import com.github.plataformadodaleapi.model.student.Competence;
 import com.github.plataformadodaleapi.model.student.Student;
 import com.github.plataformadodaleapi.repository.CompetenceRepository;
 import com.github.plataformadodaleapi.repository.StudentFilterParam;
 import com.github.plataformadodaleapi.repository.StudentRepository;
+import com.github.plataformadodaleapi.student.dto.request.StudentRequestDTO;
+import com.github.plataformadodaleapi.student.dto.response.StudentResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,6 +48,15 @@ public class StudentService {
             Optional<Competence> competenceOptional = competenceRepository.findById(idCompetence);
             competenceOptional.ifPresent(competence -> studentOptional.get().getCompetences().add(competence));
             return studentRepository.save(studentOptional.get());
+        }
+        return null;
+    }
+
+    public Student removeCompetenceById(Long studentId, Long competenceId) {
+        Optional<Student> studentFounded = studentRepository.findById(studentId);
+        if (studentFounded.isPresent()) {
+            studentFounded.get().getCompetences().removeIf(competence -> competence.getId() == competenceId);
+            return studentRepository.save(studentFounded.get());
         }
         return null;
     }
