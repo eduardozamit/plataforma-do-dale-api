@@ -12,8 +12,8 @@ import java.util.Optional;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> , StudentRepositoryCustom{
     @Query("SELECT s FROM Student s JOIN FETCH s.competences")
-    List<Student> listAllStudentsCompetences();
+    List<Student> getAllStudentsCompetences();
 
     @Query("SELECT s FROM Student s JOIN FETCH s.competences WHERE s.id = :student_id")
-    Optional<Student> listStudentCompetenceById(@Param("student_id") long studentId);
+    Optional<Student> getStudentCompetenceById(@Param("student_id") long studentId);
 }
