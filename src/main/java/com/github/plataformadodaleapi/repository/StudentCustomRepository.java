@@ -1,5 +1,6 @@
 package com.github.plataformadodaleapi.repository;
 
+import com.github.plataformadodaleapi.entity.GCTrail;
 import com.github.plataformadodaleapi.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -16,7 +17,7 @@ public class StudentCustomRepository {
         this.em = em;
     }
 
-    public List<Student> findCustom(String name, Integer age) {
+    public List<Student> findCustom(String name, Integer age, GCTrail gcTrail) {
         StringBuilder queryBuilder = new StringBuilder("Select s from Student as s ");
         String condicao = "where";
 
@@ -27,8 +28,12 @@ public class StudentCustomRepository {
 
         if (age != null && age > 0) {
             queryBuilder.append(condicao).append(" s.age = :age");
+            condicao = " and";
         }
 
+        if (gcTrail != null) {
+            queryBuilder.append(condicao).append(" s.gcTrail = :gcTrail");
+        }
         var query = em.createQuery(queryBuilder.toString(), Student.class);
 
         if (name != null) {
@@ -37,6 +42,9 @@ public class StudentCustomRepository {
 
         if (age != null && age > 0) {
             query.setParameter("age", age);
+        }
+        if (gcTrail != null) {
+            query.setParameter("gcTrail", gcTrail);
         }
 
         return query.getResultList();
