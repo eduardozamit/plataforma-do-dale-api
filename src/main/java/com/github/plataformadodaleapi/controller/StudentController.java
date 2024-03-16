@@ -2,6 +2,7 @@ package com.github.plataformadodaleapi.controller;
 
 import com.github.plataformadodaleapi.dto.request.StudentRequestDTO;
 import com.github.plataformadodaleapi.dto.response.StudentResponse;
+import com.github.plataformadodaleapi.entity.GCTrail;
 import com.github.plataformadodaleapi.entity.Student;
 import com.github.plataformadodaleapi.service.StudentService;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,9 @@ public class StudentController {
 
     @GetMapping("/with-competence/{id}")
     public ResponseEntity<Student> findStudentWithCompetenceById(@PathVariable long id) {
-        return service.listStudentWithCompetenceById(id).isPresent() ? ResponseEntity.ok(service.listStudentWithCompetenceById(id).get()) : ResponseEntity.badRequest().build();
+        return service.listStudentWithCompetenceById(id).isPresent()
+                ? ResponseEntity.ok(service.listStudentWithCompetenceById(id).get())
+                : ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/salvar")
@@ -46,7 +49,9 @@ public class StudentController {
     }
 
     @GetMapping("/filtro")
-    public List<Student> findStudentsByFilter(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age") Integer age) {
-        return service.listStudentsByFilter(name, age);
+    public List<Student> findStudentsByFilter(@RequestParam(required = false, name = "name") String name,
+                                              @RequestParam(required = false, name = "age") Integer age,
+                                              @RequestParam(required = false, name = "trail") GCTrail gcTrail) {
+        return service.listStudentsByFilter(name, age, gcTrail);
     }
 }
