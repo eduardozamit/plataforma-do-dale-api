@@ -21,45 +21,45 @@ public class StudentController {
         this.service = service;
     }
 
-    @PostMapping("/salvar")
+    @PostMapping("/save")
     public ResponseEntity<Student> saveStudent(@RequestBody StudentRequestDTO studentRequestDTO) {
         Student student = service.saveStudent(studentRequestDTO);
         return new ResponseEntity<>(student, HttpStatus.CREATED);
     }
 
-    @PostMapping("/adicionar-competencia/mais-de-uma")
+    @PostMapping("/add-competence/more-than-one")
     public ResponseEntity<Student> addCompetences(@RequestParam("student") Long studentId,
                                                   @RequestParam("competence") List<Long> idsCompetences) {
         Student student = service.addManyCompetencesToStudent(studentId, idsCompetences);
         return student != null ? ResponseEntity.ok(student) : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @PostMapping("/adicionar-competencia")
+    @PostMapping("/add-competence")
     public ResponseEntity<Student> addCompetence(@RequestParam("student") Long studentId,
                                                  @RequestParam("competence") Long idCompetence) {
         Student student = service.addCompetenceToStudent(studentId, idCompetence);
         return student != null ? ResponseEntity.ok(student) : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @GetMapping("/sem-competencias")
+    @GetMapping
     public ResponseEntity<List<StudentResponse>> findAllStudents() {
         List<StudentResponse> students = service.getAllStudents();
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/with-competence")
     public ResponseEntity<List<Student>> getStudentsWithCompetences() {
         List<Student> students = service.getAllStudentsWithCompetence();
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
-    @GetMapping("/filtro")
+    @GetMapping("/filter")
     public ResponseEntity<List<Student>> getWithFilter(@RequestBody StudentFilterParam params) {
         List<Student> students = service.getAllByFilter(params);
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
-    @GetMapping("/with-competence/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Student> findStudentWithCompetenceById(@PathVariable Long id) {
         Optional<Student> studentOptional = service.getStudentWithCompetenceById(id);
         return studentOptional.map(ResponseEntity::ok)
