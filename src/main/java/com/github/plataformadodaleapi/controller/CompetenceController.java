@@ -1,8 +1,8 @@
 package com.github.plataformadodaleapi.controller;
 
-import com.github.plataformadodaleapi.student.dto.request.CompetenceRequest;
 import com.github.plataformadodaleapi.model.student.Competence;
 import com.github.plataformadodaleapi.service.CompetenceService;
+import com.github.plataformadodaleapi.student.dto.request.CompetenceRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,12 +27,12 @@ public class CompetenceController {
         return service.findById(id);
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Competence> save(@RequestBody CompetenceRequest competenceRequest) {
         return ResponseEntity.ok(service.save(competenceRequest));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/delete/{id}")
     public void deleteById(@PathVariable Long id) {
         service.deleteCompetenceById(id);
     }
