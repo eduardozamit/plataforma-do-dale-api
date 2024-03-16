@@ -1,7 +1,7 @@
-package com.github.plataformadodaleapi.entity;
+package com.github.plataformadodaleapi.model.student;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.github.plataformadodaleapi.dto.request.CompetenceRequest;
+import com.github.plataformadodaleapi.student.dto.request.CompetenceRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

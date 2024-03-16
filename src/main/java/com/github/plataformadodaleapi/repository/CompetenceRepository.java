@@ -1,6 +1,6 @@
 package com.github.plataformadodaleapi.repository;
 
-import com.github.plataformadodaleapi.entity.Competence;
+import com.github.plataformadodaleapi.model.student.Competence;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

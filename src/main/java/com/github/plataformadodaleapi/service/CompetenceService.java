@@ -1,7 +1,7 @@
 package com.github.plataformadodaleapi.service;
 
-import com.github.plataformadodaleapi.dto.request.CompetenceRequest;
-import com.github.plataformadodaleapi.entity.Competence;
+import com.github.plataformadodaleapi.student.dto.request.CompetenceRequest;
+import com.github.plataformadodaleapi.model.student.Competence;
 import com.github.plataformadodaleapi.repository.CompetenceRepository;
 import org.springframework.stereotype.Service;
 
