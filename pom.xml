@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.github</groupId>
-	<artifactId>plataforma-do-dale-API</artifactId>
+	<artifactId>plataforma-do-dale-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>plataforma-do-dale-API</name>
+	<name>plataforma-do-dale-api</name>
 	<description>plataforma do DALE</description>
 	<properties>
 		<java.version>17</java.version>
