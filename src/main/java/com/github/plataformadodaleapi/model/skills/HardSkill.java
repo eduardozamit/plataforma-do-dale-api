@@ -1,7 +1,7 @@
-package com.github.plataformadodaleapi.model.student;
+package com.github.plataformadodaleapi.model.skills;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.github.plataformadodaleapi.student.dto.request.CompetenceRequest;
+import com.github.plataformadodaleapi.model.student.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,27 +10,27 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Table(name = "competence")
+@Table(name = "hard_skill")
 @Entity
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Competence {
+public class HardSkill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "description", nullable = false)
     private String description;
     @JsonBackReference
-    @ManyToMany(mappedBy = "competences")
+    @ManyToMany(mappedBy = "hardSkills")
     private List<Student> students;
 
-    public Competence(String description) {
+    public HardSkill(String description) {
         this.description = description;
     }
 
-    public Competence(CompetenceRequest competenceRequest) {
-        this.description = competenceRequest.description();
+    public HardSkill(SkillRequestDTO skillRequestDTO) {
+        this.description = skillRequestDTO.description();
     }
 }
