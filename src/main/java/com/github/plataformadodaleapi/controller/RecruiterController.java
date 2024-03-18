@@ -1,7 +1,7 @@
 package com.github.plataformadodaleapi.controller;
 
 import com.github.plataformadodaleapi.model.recruiter.Recruiter;
-import com.github.plataformadodaleapi.model.recruiter.dto.request.RecruiterRequestDTO;
+import com.github.plataformadodaleapi.model.recruiter.RecruiterRequestDTO;
 import com.github.plataformadodaleapi.service.RecruiterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,24 +31,22 @@ public class RecruiterController {
     public ResponseEntity<Recruiter> getRecruiterById(@PathVariable Long id) {
         Recruiter recruiter = recruiterService.getRecruiterById(id);
         return recruiter != null
-                ? ResponseEntity.status(HttpStatus.OK).body(recruiter)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                ? ResponseEntity.ok(recruiter)
+                : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/save")
     public ResponseEntity<Recruiter> createRecruiter(@RequestBody RecruiterRequestDTO requestDto) {
         Recruiter recruiter = recruiterService.createRecruiter(requestDto);
-        return recruiter != null
-                ? ResponseEntity.status(HttpStatus.CREATED).body(recruiter)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(recruiter);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Recruiter> updateRecruiter(@PathVariable Long id, @RequestBody RecruiterRequestDTO requestDto) {
         Recruiter recruiterFounded = recruiterService.updateRecruiter(id, requestDto);
         return recruiterFounded != null
-                ? ResponseEntity.status(HttpStatus.OK).body(recruiterFounded)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                ? ResponseEntity.ok(recruiterFounded)
+                : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
@@ -61,17 +59,17 @@ public class RecruiterController {
     public ResponseEntity<Recruiter> favoriteStudent(@RequestParam("recruiter") Long recruiterId,
                                                      @RequestParam("student") Long studentId) {
         Recruiter recruiter = recruiterService.favoriteStudentById(recruiterId, studentId);
-        return recruiter != null ? ResponseEntity.ok(recruiter) : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return recruiter != null
+                ? ResponseEntity.ok(recruiter)
+                : ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/disfavor-student")
     public ResponseEntity<Recruiter> disfavorStudent(@RequestParam("recruiter") Long recruiterId,
                                                      @RequestParam("student") Long studentId) {
         Recruiter updatedRecruiter = recruiterService.disfavorStudentById(recruiterId, studentId);
-        if (updatedRecruiter != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(updatedRecruiter);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return updatedRecruiter != null
+                ? ResponseEntity.ok(updatedRecruiter)
+                : ResponseEntity.notFound().build();
     }
 }
