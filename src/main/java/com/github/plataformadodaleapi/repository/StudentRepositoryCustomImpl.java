@@ -1,6 +1,7 @@
 package com.github.plataformadodaleapi.repository;
 
-import com.github.plataformadodaleapi.model.student.Competence;
+import com.github.plataformadodaleapi.model.skills.HardSkill;
+import com.github.plataformadodaleapi.model.skills.SoftSkill;
 import com.github.plataformadodaleapi.model.student.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -32,13 +33,26 @@ public class StudentRepositoryCustomImpl implements StudentRepositoryCustom {
             predicates.add(criteriaBuilder.equal(studentRoot.get("age"), params.getAge()));
         }
 
+        if (params.getCity() != null) {
+            predicates.add(criteriaBuilder.equal(studentRoot.get("city"), params.getCity()));
+        }
+
         if (params.getGcTrail() != null) {
             predicates.add(criteriaBuilder.equal(studentRoot.get("gcTrail"), params.getGcTrail()));
         }
 
-        if (params.getCompetences() != null && !params.getCompetences().isEmpty()) {
-            Join<Student, Competence> join = studentRoot.join("competences");
-            predicates.add(join.get("id").in(params.getCompetences()));
+        if (params.getEducationLevel() != null) {
+            predicates.add(criteriaBuilder.equal(studentRoot.get("educationLevel"), params.getEducationLevel()));
+        }
+
+        if (params.getHardSkill() != null && !params.getHardSkill().isEmpty()) {
+            Join<Student, HardSkill> join = studentRoot.join("hardSkill");
+            predicates.add(join.get("id").in(params.getHardSkill()));
+        }
+
+        if (params.getSoftSkill() != null && !params.getSoftSkill().isEmpty()) {
+            Join<Student, SoftSkill> join = studentRoot.join("softSkill");
+            predicates.add(join.get("id").in(params.getSoftSkill()));
         }
 
         if (!predicates.isEmpty()) {
@@ -48,5 +62,4 @@ public class StudentRepositoryCustomImpl implements StudentRepositoryCustom {
         TypedQuery<Student> queryResult = this.entityManager.createQuery(query);
         return queryResult.getResultList();
     }
-
 }
