@@ -1,12 +1,14 @@
 package com.github.plataformadodaleapi.service;
 
-import com.github.plataformadodaleapi.model.student.Competence;
+import com.github.plataformadodaleapi.model.skills.HardSkill;
+import com.github.plataformadodaleapi.model.skills.SoftSkill;
 import com.github.plataformadodaleapi.model.student.Student;
-import com.github.plataformadodaleapi.repository.CompetenceRepository;
+import com.github.plataformadodaleapi.model.student.StudentRequestDTO;
+import com.github.plataformadodaleapi.model.student.StudentResponse;
+import com.github.plataformadodaleapi.repository.HardSkillRepository;
+import com.github.plataformadodaleapi.repository.SoftSkillRepository;
 import com.github.plataformadodaleapi.repository.StudentFilterParam;
 import com.github.plataformadodaleapi.repository.StudentRepository;
-import com.github.plataformadodaleapi.student.dto.request.StudentRequestDTO;
-import com.github.plataformadodaleapi.student.dto.response.StudentResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,12 +17,14 @@ import java.util.Optional;
 
 @Service
 public class StudentService {
-    private StudentRepository studentRepository;
-    private CompetenceRepository competenceRepository;
+    private final StudentRepository studentRepository;
+    private final HardSkillRepository hardSkillRepository;
+    private final SoftSkillRepository softSkillRepository;
 
-    public StudentService(StudentRepository studentRepository, CompetenceRepository competenceRepository) {
+    public StudentService(StudentRepository studentRepository, HardSkillRepository hardSkillRepository, SoftSkillRepository softSkillRepository) {
         this.studentRepository = studentRepository;
-        this.competenceRepository = competenceRepository;
+        this.hardSkillRepository = hardSkillRepository;
+        this.softSkillRepository = softSkillRepository;
     }
 
     public Student saveStudent(StudentRequestDTO studentRequestDTO) {
@@ -28,35 +32,68 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student addManyCompetencesToStudent(Long studentId, List<Long> listOfCompetences) {
-        Optional<Student> studentOptional = studentRepository.findById(studentId);
-        if (studentOptional.isPresent()) {
-            List<Competence> competences = new ArrayList<>();
-            for (Long id : listOfCompetences) {
-                Optional<Competence> competenceOptional = competenceRepository.findById(id);
-                competenceOptional.ifPresent(competences::add);
+    public Student addManyHardSkillsToStudent(Long studentId, List<Long> listOfHardSkills) {
+        Optional<Student> studentFound = studentRepository.findById(studentId);
+        if (studentFound.isPresent()) {
+            List<HardSkill> hardSkills = new ArrayList<>();
+            for (Long id : listOfHardSkills) {
+                Optional<HardSkill> hardSkillFound = hardSkillRepository.findById(id);
+                hardSkillFound.ifPresent(hardSkills::add);
             }
-            studentOptional.get().getCompetences().addAll(competences);
-            return studentRepository.save(studentOptional.get());
+            studentFound.get().getHardSkills().addAll(hardSkills);
+            return studentRepository.save(studentFound.get());
         }
         return null;
     }
 
-    public Student addCompetenceToStudent(Long studentId, Long idCompetence) {
-        Optional<Student> studentOptional = studentRepository.findById(studentId);
-        if (studentOptional.isPresent()) {
-            Optional<Competence> competenceOptional = competenceRepository.findById(idCompetence);
-            competenceOptional.ifPresent(competence -> studentOptional.get().getCompetences().add(competence));
-            return studentRepository.save(studentOptional.get());
+    public Student addHardSkillToStudent(Long studentId, Long hardSkillId) {
+        Optional<Student> studentFound = studentRepository.findById(studentId);
+        if (studentFound.isPresent()) {
+            Optional<HardSkill> hardSkillFound = hardSkillRepository.findById(hardSkillId);
+            hardSkillFound.ifPresent(hardSkill -> studentFound.get().getHardSkills().add(hardSkill));
+            return studentRepository.save(studentFound.get());
         }
         return null;
     }
 
-    public Student removeCompetenceById(Long studentId, Long competenceId) {
-        Optional<Student> studentFounded = studentRepository.findById(studentId);
-        if (studentFounded.isPresent()) {
-            studentFounded.get().getCompetences().removeIf(competence -> competence.getId() == competenceId);
-            return studentRepository.save(studentFounded.get());
+    public Student removeHardSkillById(Long studentId, Long hardSkillId) {
+        Optional<Student> studentFound = studentRepository.findById(studentId);
+        if (studentFound.isPresent()) {
+            studentFound.get().getHardSkills().removeIf(hardSkill -> hardSkill.getId() == hardSkillId);
+            return studentRepository.save(studentFound.get());
+        }
+        return null;
+    }
+
+    public Student addManySoftSkillsToStudent(Long studentId, List<Long> listOfSoftSkills) {
+        Optional<Student> studentFound = studentRepository.findById(studentId);
+        if (studentFound.isPresent()) {
+            List<SoftSkill> softSkills = new ArrayList<>();
+            for (Long id : listOfSoftSkills) {
+                Optional<SoftSkill> softSkillFound = softSkillRepository.findById(id);
+                softSkillFound.ifPresent(softSkills::add);
+            }
+            studentFound.get().getSoftSkills().addAll(softSkills);
+            return studentRepository.save(studentFound.get());
+        }
+        return null;
+    }
+
+    public Student addSoftSkillToStudent(Long studentId, Long softSkillId) {
+        Optional<Student> studentFound = studentRepository.findById(studentId);
+        if (studentFound.isPresent()) {
+            Optional<SoftSkill> softSkillFound = softSkillRepository.findById(softSkillId);
+            softSkillFound.ifPresent(softSkill -> studentFound.get().getSoftSkills().add(softSkill));
+            return studentRepository.save(studentFound.get());
+        }
+        return null;
+    }
+
+    public Student removeSoftSkillById(Long studentId, Long softSkillId) {
+        Optional<Student> studentFound = studentRepository.findById(studentId);
+        if (studentFound.isPresent()) {
+            studentFound.get().getSoftSkills().removeIf(softSkill -> softSkill.getId() == softSkillId);
+            return studentRepository.save(studentFound.get());
         }
         return null;
     }
@@ -64,8 +101,8 @@ public class StudentService {
     public List<StudentResponse> getAllStudents() {
         List<Student> studentsList = studentRepository.findAll();
         List<StudentResponse> students = new ArrayList<>();
-        for (Student studentIndex : studentsList) {
-            StudentResponse studentResponse = new StudentResponse(studentIndex);
+        for (Student student : studentsList) {
+            StudentResponse studentResponse = new StudentResponse(student);
             students.add(studentResponse);
         }
         return students;
@@ -75,11 +112,7 @@ public class StudentService {
         return studentRepository.findById(studentId);
     }
 
-    public List<Student> getAllStudentsWithCompetence() {
-        return studentRepository.getAllStudentsCompetences();
-    }
-
     public List<Student> getAllByFilter(StudentFilterParam params) {
-        return this.studentRepository.getWithFilter(params);
+        return studentRepository.getWithFilter(params);
     }
 }
