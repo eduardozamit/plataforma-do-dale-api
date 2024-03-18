@@ -1,10 +1,10 @@
 package com.github.plataformadodaleapi.controller;
 
 import com.github.plataformadodaleapi.model.student.Student;
+import com.github.plataformadodaleapi.model.student.StudentRequestDTO;
+import com.github.plataformadodaleapi.model.student.StudentResponse;
 import com.github.plataformadodaleapi.repository.StudentFilterParam;
 import com.github.plataformadodaleapi.service.StudentService;
-import com.github.plataformadodaleapi.student.dto.request.StudentRequestDTO;
-import com.github.plataformadodaleapi.student.dto.response.StudentResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/api/students")
 public class StudentController {
     private StudentService studentService;
 
@@ -27,40 +27,53 @@ public class StudentController {
         return new ResponseEntity<>(student, HttpStatus.CREATED);
     }
 
-    @PostMapping("/add-competence/more-than-one")
-    public ResponseEntity<Student> addCompetences(@RequestParam("student") Long studentId,
-                                                  @RequestParam("competence") List<Long> idsCompetences) {
-        Student student = studentService.addManyCompetencesToStudent(studentId, idsCompetences);
-        return student != null ? ResponseEntity.ok(student) : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    @PostMapping("/add-hard-skill")
+    public ResponseEntity<Student> addHardSkill(@RequestParam("student") Long studentId,
+                                                @RequestParam("hardSkill") Long hardSkillId) {
+        Student student = studentService.addHardSkillToStudent(studentId, hardSkillId);
+        return student != null ? ResponseEntity.ok(student) : ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/add-competence")
-    public ResponseEntity<Student> addCompetence(@RequestParam("student") Long studentId,
-                                                 @RequestParam("competence") Long competenceId) {
-        Student student = studentService.addCompetenceToStudent(studentId, competenceId);
-        return student != null ? ResponseEntity.ok(student) : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    @PostMapping("/add-hard-skill/more-than-one")
+    public ResponseEntity<Student> addHardSkills(@RequestParam("student") Long studentId,
+                                                 @RequestParam("hardSkill") List<Long> idsHardSkills) {
+        Student student = studentService.addManyHardSkillsToStudent(studentId, idsHardSkills);
+        return student != null ? ResponseEntity.ok(student) : ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/remove-competence")
-    public ResponseEntity<Student> removeCompetenceById(@RequestParam("student") Long studentId,
-                                                        @RequestParam("competence") Long competenceId) {
-        Student studentUpdated = studentService.removeCompetenceById(studentId, competenceId);
-        if (studentUpdated != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(studentUpdated);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    @PostMapping("/remove-hard-skill")
+    public ResponseEntity<Student> removeHardSkillById(@RequestParam("student") Long studentId,
+                                                       @RequestParam("hardSkill") Long hardSkillId) {
+        Student studentUpdated = studentService.removeHardSkillById(studentId, hardSkillId);
+        return studentUpdated != null ? ResponseEntity.ok(studentUpdated) : ResponseEntity.notFound().build();
     }
+
+
+    @PostMapping("/add-soft-skill")
+    public ResponseEntity<Student> addSoftSkill(@RequestParam("student") Long studentId,
+                                                @RequestParam("softSkill") Long softSkillId) {
+        Student student = studentService.addSoftSkillToStudent(studentId, softSkillId);
+        return student != null ? ResponseEntity.ok(student) : ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/add-soft-skill/more-than-one")
+    public ResponseEntity<Student> addSoftSkills(@RequestParam("student") Long studentId,
+                                                 @RequestParam("softSkill") List<Long> softSkillsids) {
+        Student student = studentService.addManySoftSkillsToStudent(studentId, softSkillsids);
+        return student != null ? ResponseEntity.ok(student) : ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/remove-soft-skill")
+    public ResponseEntity<Student> removeSoftSkillById(@RequestParam("student") Long studentId,
+                                                       @RequestParam("softSkill") Long softSkillId) {
+        Student studentUpdated = studentService.removeSoftSkillById(studentId, softSkillId);
+        return studentUpdated != null ? ResponseEntity.ok(studentUpdated) : ResponseEntity.notFound().build();
+    }
+
 
     @GetMapping
     public ResponseEntity<List<StudentResponse>> findAllStudents() {
         List<StudentResponse> students = studentService.getAllStudents();
-        return new ResponseEntity<>(students, HttpStatus.OK);
-    }
-
-    @GetMapping("/with-competence")
-    public ResponseEntity<List<Student>> getStudentsWithCompetences() {
-        List<Student> students = studentService.getAllStudentsWithCompetence();
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
@@ -74,6 +87,6 @@ public class StudentController {
     public ResponseEntity<Student> findStudentWithCompetenceById(@PathVariable Long id) {
         Optional<Student> studentOptional = studentService.getStudentWithCompetenceById(id);
         return studentOptional.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
