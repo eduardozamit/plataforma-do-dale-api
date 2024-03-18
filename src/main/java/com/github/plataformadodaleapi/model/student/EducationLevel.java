@@ -1,12 +1,12 @@
 package com.github.plataformadodaleapi.model.student;
 
 public enum EducationLevel {
-    FUNDAMENTAL("Ensino Fundamental"),
-    MEDIO("Ensino médio"),
-    GRADUACAO("Graduação"),
-    POS_GRADUACAO("Pós Graduação"),
-    MESTRADO("Mestrado"),
-    DOUTORADO("Doutorado");
+    MEDIO_EM_ANDAMENTO("Ensino Médio em andamento"),
+    MEDIO_COMPLETO("Ensino Médio completo"),
+    SUPERIOR_EM_ANDAMENTO("Ensino Superior em andamento"),
+    SUPERIOR_COMPLETO("Ensino Superior completo"),
+    POS_GRADUACAO_EM_ANDAMENTO("Pós Graduação em andamento"),
+    POS_GRADUACAO_COMPLETO("Pós Graduação completo");
 
     private String value;
 
