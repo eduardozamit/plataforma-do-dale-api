@@ -1,8 +1,11 @@
-package com.github.plataformadodaleapi.student.dto.response;
+package com.github.plataformadodaleapi.model.student;
 
 import com.github.plataformadodaleapi.model.student.EducationLevel;
 import com.github.plataformadodaleapi.model.student.GCTrail;
 import com.github.plataformadodaleapi.model.student.Student;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,12 +17,16 @@ public class StudentResponse {
     private long id;
     private String name;
     private int age;
-    private String biography;
+    private GCTrail gcTrail;
     private String linkedin;
+    private String email;
+    private String biography;
     private String profilePicture;
     private String course;
     private EducationLevel educationLevel;
-    private GCTrail gcTrail;
+    private String city;
+    private String courseInstitution;
+    private String yearOfCourseCompletion;
 
     public StudentResponse(Student student) {
         this.id = student.getId();
@@ -31,5 +38,9 @@ public class StudentResponse {
         this.course = student.getCourse();
         this.educationLevel = student.getEducationLevel();
         this.gcTrail = student.getGcTrail();
+        this.email = student.getEmail();
+        this.city = student.getCity();
+        this.courseInstitution = student.getCourseInstitution();
+        this.yearOfCourseCompletion = student.getYearOfCourseCompletion();
     }
 }
