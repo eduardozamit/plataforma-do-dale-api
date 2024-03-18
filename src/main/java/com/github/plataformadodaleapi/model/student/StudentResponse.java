@@ -1,11 +1,5 @@
 package com.github.plataformadodaleapi.model.student;
 
-import com.github.plataformadodaleapi.model.student.EducationLevel;
-import com.github.plataformadodaleapi.model.student.GCTrail;
-import com.github.plataformadodaleapi.model.student.Student;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
