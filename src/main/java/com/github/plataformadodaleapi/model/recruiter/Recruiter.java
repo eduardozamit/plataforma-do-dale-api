@@ -1,7 +1,6 @@
 package com.github.plataformadodaleapi.model.recruiter;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.github.plataformadodaleapi.model.recruiter.dto.request.RecruiterRequestDTO;
 import com.github.plataformadodaleapi.model.student.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

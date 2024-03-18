@@ -1,7 +1,7 @@
 package com.github.plataformadodaleapi.service;
 
 import com.github.plataformadodaleapi.model.recruiter.Recruiter;
-import com.github.plataformadodaleapi.model.recruiter.dto.request.RecruiterRequestDTO;
+import com.github.plataformadodaleapi.model.recruiter.RecruiterRequestDTO;
 import com.github.plataformadodaleapi.model.student.Student;
 import com.github.plataformadodaleapi.repository.RecruiterRepository;
 import com.github.plataformadodaleapi.repository.StudentRepository;
