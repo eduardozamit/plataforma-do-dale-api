@@ -31,13 +31,13 @@ public class Student {
     private int age;
     @Column(name = "email", nullable = false)
     private String email;
-    @Column(name = "biography")
+    @Column(name = "biography", length = 2000)
     private String biography;
     @Column(name = "city", nullable = false)
     private String city;
     @Column(name = "linkedin")
     private String linkedin;
-    @Column(name = "profile_picture", length = 1000)
+    @Column(name = "profile_picture")
     private String profilePicture;
     @Column(name = "course")
     private String course;
