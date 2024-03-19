@@ -18,6 +18,7 @@ com\github\plataformadodaleapi\controller\SkillsController.class
 com\github\plataformadodaleapi\repository\StudentFilterParam.class
 com\github\plataformadodaleapi\model\student\GCTrail.class
 com\github\plataformadodaleapi\repository\HardSkillRepository.class
+com\github\plataformadodaleapi\configuration\WebMvcConfig.class
 com\github\plataformadodaleapi\repository\RecruiterRepository.class
 com\github\plataformadodaleapi\repository\StudentRepositoryCustomImpl.class
 com\github\plataformadodaleapi\model\recruiter\RecruiterRequestDTO.class
