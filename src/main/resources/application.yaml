@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    username: ${DB_CALDEIRA_USER}
+    password: ${DB_CALDEIRA_PASSWORD}
+    url: jdbc:mysql://${DB_CALDEIRA_HOST}:3306/database-caldeira
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 8081
+
