@@ -1,8 +1,12 @@
 package com.github.plataformadodaleapi.model.student;
 
+import com.github.plataformadodaleapi.model.skills.HardSkill;
+import com.github.plataformadodaleapi.model.skills.SoftSkill;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +25,8 @@ public class StudentResponse {
     private String city;
     private String courseInstitution;
     private String yearOfCourseCompletion;
+    private List<HardSkill> hardSkills;
+    private List<SoftSkill> softSkills;
 
     public StudentResponse(Student student) {
         this.id = student.getId();
@@ -36,5 +42,7 @@ public class StudentResponse {
         this.city = student.getCity();
         this.courseInstitution = student.getCourseInstitution();
         this.yearOfCourseCompletion = student.getYearOfCourseCompletion();
+        this.softSkills = student.getSoftSkills();
+        this.hardSkills = student.getHardSkills();
     }
 }

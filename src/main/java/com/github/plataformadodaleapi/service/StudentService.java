@@ -4,6 +4,7 @@ import com.github.plataformadodaleapi.model.skills.HardSkill;
 import com.github.plataformadodaleapi.model.skills.SoftSkill;
 import com.github.plataformadodaleapi.model.student.Student;
 import com.github.plataformadodaleapi.model.student.StudentRequestDTO;
+import com.github.plataformadodaleapi.model.student.StudentResponse;
 import com.github.plataformadodaleapi.repository.HardSkillRepository;
 import com.github.plataformadodaleapi.repository.SoftSkillRepository;
 import com.github.plataformadodaleapi.repository.StudentFilterParam;
@@ -97,15 +98,17 @@ public class StudentService {
         return null;
     }
 
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public List<StudentResponse> getAllStudents() {
+        List<Student> studentsList = studentRepository.findAll();
+        return studentsList.stream().map(StudentResponse::new).toList();
     }
 
-    public Optional<Student> getStudentWithCompetenceById(long studentId) {
-        return studentRepository.findById(studentId);
+    public Optional<StudentResponse> getStudentWithCompetenceById(long studentId) {
+        return studentRepository.findById(studentId).map(StudentResponse::new);
     }
 
-    public List<Student> getAllByFilter(StudentFilterParam params) {
-        return studentRepository.getWithFilter(params);
+    public List<StudentResponse> getAllByFilter(StudentFilterParam params) {
+        List<Student> studentsList = studentRepository.getWithFilter(params);
+        return studentsList.stream().map(StudentResponse::new).toList();
     }
 }

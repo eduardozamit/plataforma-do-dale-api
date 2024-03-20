@@ -2,6 +2,7 @@ package com.github.plataformadodaleapi.controller;
 
 import com.github.plataformadodaleapi.model.student.Student;
 import com.github.plataformadodaleapi.model.student.StudentRequestDTO;
+import com.github.plataformadodaleapi.model.student.StudentResponse;
 import com.github.plataformadodaleapi.repository.StudentFilterParam;
 import com.github.plataformadodaleapi.service.StudentService;
 import org.springframework.http.HttpStatus;
@@ -71,20 +72,20 @@ public class StudentController {
 
 
     @GetMapping
-    public ResponseEntity<List<Student>> findAllStudents() {
-        List<Student> students = studentService.getAllStudents();
+    public ResponseEntity<List<StudentResponse>> findAllStudents() {
+        List<StudentResponse> students = studentService.getAllStudents();
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<Student>> getWithFilter(@RequestBody StudentFilterParam params) {
-        List<Student> students = studentService.getAllByFilter(params);
+    public ResponseEntity<List<StudentResponse>> getWithFilter(@RequestBody StudentFilterParam params) {
+        List<StudentResponse> students = studentService.getAllByFilter(params);
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> findStudentWithCompetenceById(@PathVariable Long id) {
-        Optional<Student> studentOptional = studentService.getStudentWithCompetenceById(id);
+    public ResponseEntity<StudentResponse> findStudentWithCompetenceById(@PathVariable Long id) {
+        Optional<StudentResponse> studentOptional = studentService.getStudentWithCompetenceById(id);
         return studentOptional.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
