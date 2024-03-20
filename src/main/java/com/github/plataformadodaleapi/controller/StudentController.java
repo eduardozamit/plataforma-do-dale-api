@@ -2,7 +2,6 @@ package com.github.plataformadodaleapi.controller;
 
 import com.github.plataformadodaleapi.model.student.Student;
 import com.github.plataformadodaleapi.model.student.StudentRequestDTO;
-import com.github.plataformadodaleapi.model.student.StudentResponse;
 import com.github.plataformadodaleapi.repository.StudentFilterParam;
 import com.github.plataformadodaleapi.service.StudentService;
 import org.springframework.http.HttpStatus;
@@ -72,8 +71,8 @@ public class StudentController {
 
 
     @GetMapping
-    public ResponseEntity<List<StudentResponse>> findAllStudents() {
-        List<StudentResponse> students = studentService.getAllStudents();
+    public ResponseEntity<List<Student>> findAllStudents() {
+        List<Student> students = studentService.getAllStudents();
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
