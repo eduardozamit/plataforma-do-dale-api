@@ -11,13 +11,13 @@ public class StudentResponse {
     private long id;
     private String name;
     private int age;
-    private GCTrail gcTrail;
+    private String gcTrail;
     private String linkedin;
     private String email;
     private String biography;
     private String profilePicture;
     private String course;
-    private EducationLevel educationLevel;
+    private String educationLevel;
     private String city;
     private String courseInstitution;
     private String yearOfCourseCompletion;
@@ -30,8 +30,8 @@ public class StudentResponse {
         this.linkedin = student.getLinkedin();
         this.profilePicture = student.getProfilePicture();
         this.course = student.getCourse();
-        this.educationLevel = student.getEducationLevel();
-        this.gcTrail = student.getGcTrail();
+        this.educationLevel = student.getEducationLevel().getValue();
+        this.gcTrail = student.getGcTrail().getValue();
         this.email = student.getEmail();
         this.city = student.getCity();
         this.courseInstitution = student.getCourseInstitution();

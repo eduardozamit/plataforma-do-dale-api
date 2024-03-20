@@ -14,7 +14,7 @@ public enum GCTrail {
         this.value = value;
     }
 
-    public String getName() {
+    public String getValue() {
         return value;
     }
 }
