@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.github.plataformadodaleapi.PlataformaDoDaleApiApplicationTests
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.88 s -- in com.github.plataformadodaleapi.PlataformaDoDaleApiApplicationTests
+=======
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.37 s -- in com.github.plataformadodaleapi.PlataformaDoDaleApiApplicationTests
+>>>>>>> 889f4899022f5da946c6625f452ba978f88a14bd
