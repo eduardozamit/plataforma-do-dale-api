@@ -18,10 +18,7 @@ import java.io.IOException;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired
     private TokenService tokenService;
-
-    @Autowired
     private RecruiterRepository recruiterRepository;
 
     @Override
@@ -42,5 +39,11 @@ public class SecurityFilter extends OncePerRequestFilter {
             return authorizationHeader.replace("Bearer ", "");
         }
         return null;
+    }
+
+    @Autowired
+    public SecurityFilter(TokenService tokenService, RecruiterRepository recruiterRepository) {
+        this.tokenService = tokenService;
+        this.recruiterRepository = recruiterRepository;
     }
 }
