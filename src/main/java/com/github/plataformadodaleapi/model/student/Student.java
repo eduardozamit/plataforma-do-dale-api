@@ -2,7 +2,7 @@ package com.github.plataformadodaleapi.model.student;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.github.plataformadodaleapi.model.recruiter.Recruiter;
+import com.github.plataformadodaleapi.model.recruiter.RecruiterModel;
 import com.github.plataformadodaleapi.model.skills.HardSkill;
 import com.github.plataformadodaleapi.model.skills.SoftSkill;
 import jakarta.persistence.*;
@@ -73,7 +73,7 @@ public class Student {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruiter_id")
-    private Recruiter recruiter;
+    private RecruiterModel recruiterModel;
 
     public Student(StudentRequestDTO studentRequestDTO) {
         this.name = studentRequestDTO.name();
