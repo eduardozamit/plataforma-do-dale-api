@@ -33,6 +33,8 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/api/recruiters/create/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/verification").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/students").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
                         .anyRequest().authenticated()
