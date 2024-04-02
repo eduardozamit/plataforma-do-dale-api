@@ -3,6 +3,9 @@ package com.github.plataformadodaleapi.controller;
 import com.github.plataformadodaleapi.model.recruiter.RecruiterDetalingData;
 import com.github.plataformadodaleapi.model.recruiter.RegisterRecruiterDTO;
 import com.github.plataformadodaleapi.model.recruiter.UpdateRecruiterDTO;
+import com.github.plataformadodaleapi.model.student.StudentProjection;
+import com.github.plataformadodaleapi.model.student.StudentResponse;
+import com.github.plataformadodaleapi.model.student.StudentResponseDTO;
 import com.github.plataformadodaleapi.service.RecruiterService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/recruiters")
@@ -51,9 +55,24 @@ public class RecruiterController {
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteUser(HttpServletRequest request) {
         recruiterService.deleteRecruiter(request);
-
         return ResponseEntity.ok().build();
     }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/students")
+    public ResponseEntity<List<StudentResponseDTO>> getAllStudents(HttpServletRequest request) {
+        List<StudentResponseDTO> students = recruiterService.getAllStudents(request);
+        return ResponseEntity.ok(students);
+    }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/favorite-list")
+    public ResponseEntity<List<StudentResponseDTO>> getFavoriteStudents(HttpServletRequest request) {
+        List<StudentResponseDTO> students = recruiterService.getFavoriteStudents(request);
+        return ResponseEntity.ok(students);
+    }
+
+
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("/add-favorite-student")
