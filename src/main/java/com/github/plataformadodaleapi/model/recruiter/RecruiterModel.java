@@ -1,14 +1,11 @@
 package com.github.plataformadodaleapi.model.recruiter;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.plataformadodaleapi.model.student.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,10 +33,11 @@ public class RecruiterModel implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @JsonManagedReference
-    @Cascade(value = CascadeType.ALL)
     @ManyToMany
-    @JoinTable(name = "recruiter_student", joinColumns = @JoinColumn(name = "recruiter_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
+    @JoinTable(
+            name = "recruiter_student",
+            joinColumns = @JoinColumn(name = "recruiter_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> favoriteStudents;
 
     public RecruiterModel(RegisterRecruiterDTO dto) {

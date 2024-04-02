@@ -1,6 +1,6 @@
 package com.github.plataformadodaleapi.model.student;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.plataformadodaleapi.model.recruiter.RecruiterModel;
 import com.github.plataformadodaleapi.model.skills.HardSkill;
@@ -70,10 +70,10 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "soft_skill_id")
     )
     private List<SoftSkill> softSkills;
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recruiter_id")
-    private RecruiterModel recruiterModel;
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "recruiter_student", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "recruiter_id"))
+    private List<RecruiterModel> favoritedByRecruiters;
 
     public Student(StudentRequestDTO studentRequestDTO) {
         this.name = studentRequestDTO.name();
