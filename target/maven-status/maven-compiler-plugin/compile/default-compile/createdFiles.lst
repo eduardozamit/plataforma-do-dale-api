@@ -7,6 +7,7 @@ com\github\plataformadodaleapi\model\student\StudentRequestDTO.class
 com\github\plataformadodaleapi\controller\StudentController.class
 com\github\plataformadodaleapi\security\TokenJWTDTO.class
 com\github\plataformadodaleapi\service\StudentService.class
+com\github\plataformadodaleapi\model\student\StudentResponseDTO.class
 com\github\plataformadodaleapi\PlataformaDoDaleApiApplication.class
 com\github\plataformadodaleapi\repository\StudentRepository.class
 com\github\plataformadodaleapi\controller\RecruiterController.class
@@ -23,6 +24,7 @@ com\github\plataformadodaleapi\model\auth\EmailVerificationDTO.class
 com\github\plataformadodaleapi\model\recruiter\RecruiterModel.class
 com\github\plataformadodaleapi\model\skills\SoftSkill.class
 com\github\plataformadodaleapi\service\SkillService.class
+com\github\plataformadodaleapi\model\student\StudentProjection.class
 com\github\plataformadodaleapi\controller\SkillsController.class
 com\github\plataformadodaleapi\repository\StudentFilterParam.class
 com\github\plataformadodaleapi\model\recruiter\UpdateRecruiterDTO.class
