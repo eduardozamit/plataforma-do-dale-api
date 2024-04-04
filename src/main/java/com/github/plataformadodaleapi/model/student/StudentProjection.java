@@ -1,7 +1,5 @@
 package com.github.plataformadodaleapi.model.student;
 
-import java.util.List;
-
 public interface StudentProjection {
     Long getId();
 
