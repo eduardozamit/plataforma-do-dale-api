@@ -1,5 +1,6 @@
 package com.github.plataformadodaleapi.model.student;
 
+import com.github.plataformadodaleapi.model.skills.SkillRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,6 @@ public class StudentResponseDTO {
     private String courseInstitution;
     private String yearOfCourseCompletion;
     private boolean favorited;
-    private List<String> softSkills;
-    private List<String> hardSkills;
+    private List<SkillRequestDTO> softSkills;
+    private List<SkillRequestDTO> hardSkills;
 }
