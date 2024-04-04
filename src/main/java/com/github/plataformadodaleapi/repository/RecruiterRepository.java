@@ -3,6 +3,7 @@ package com.github.plataformadodaleapi.repository;
 import com.github.plataformadodaleapi.model.recruiter.RecruiterModel;
 import com.github.plataformadodaleapi.model.student.StudentProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -64,4 +65,26 @@ public interface RecruiterRepository extends JpaRepository<RecruiterModel, Long>
             " WHERE rs.recruiter_id = :recruiter_id" +
             " GROUP BY s.id;", nativeQuery = true)
     List<StudentProjection> findFavoritedStudents(@Param("recruiter_id") Long recruiterId);
+
+    @Query(value = "SELECT EXISTS (" +
+            "    SELECT 1" +
+            "    FROM student" +
+            "    WHERE id = :student_id" +
+            ") AS existStudentById;", nativeQuery = true)
+    Long existStudentById(@Param("student_id") Long studentId);
+
+    @Query(value = "SELECT EXISTS (" +
+            "    SELECT 1" +
+            "    FROM recruiter_student" +
+            "    WHERE recruiter_id = :recruiter_id AND student_id = :student_id" +
+            ") AS studentIsFavorited;", nativeQuery = true)
+    Long studentIsFavorited(@Param("student_id") Long studentId, @Param("recruiter_id") Long recruiterId);
+
+    @Query(value = "INSERT INTO recruiter_student (recruiter_id, student_id) VALUES (:recruiter_id, :student_id)", nativeQuery = true)
+    @Modifying
+    void favoriteStudentById(@Param("student_id") Long studentId, @Param("recruiter_id") Long recruiterId);
+
+    @Modifying
+    @Query(value = "DELETE FROM recruiter_student WHERE student_id = :student_id AND recruiter_id = :recruiter_id", nativeQuery = true)
+    void disfavorStudentById(@Param("student_id") Long studentId, @Param("recruiter_id") Long recruiterId);
 }
