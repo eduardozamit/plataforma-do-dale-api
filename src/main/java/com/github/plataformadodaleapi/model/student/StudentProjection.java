@@ -31,7 +31,7 @@ public interface StudentProjection {
 
     Long getFavorited();
 
-    List<String> getSoftSkills();
+    String getSoftSkills();
 
-    List<String> getHardSkills();
+    String getHardSkills();
 }
