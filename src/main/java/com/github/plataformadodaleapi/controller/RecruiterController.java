@@ -73,25 +73,12 @@ public class RecruiterController {
     }
 
 
-
     @SecurityRequirement(name = "Bearer Authentication")
-    @PostMapping("/add-favorite-student")
-    public ResponseEntity<RecruiterDetalingData> favoriteStudent(@RequestParam("student") Long studentId,
-                                                                 HttpServletRequest request) {
-        RecruiterDetalingData recruiterDetalingData = recruiterService.favoriteStudent(request, studentId);
-        return recruiterDetalingData != null
-                ? ResponseEntity.ok(recruiterDetalingData)
-                : ResponseEntity.badRequest().build();
-    }
-
-    @SecurityRequirement(name = "Bearer Authentication")
-    @PostMapping("/disfavor-student")
-    public ResponseEntity<RecruiterDetalingData> disfavorStudent(@RequestParam("student") Long studentId,
-                                                                 HttpServletRequest request
-    ) {
-        RecruiterDetalingData recruiterDetalingData = recruiterService.disfavorStudent(request, studentId);
-        return recruiterDetalingData != null
-                ? ResponseEntity.ok(recruiterDetalingData)
+    @PatchMapping("/add-remove-favorite-student")
+    public ResponseEntity<Void> favoriteStudent(@RequestParam("student") Long studentId,
+                                                HttpServletRequest request) {
+        return recruiterService.favoriteOrDisfavorStudent(request, studentId)
+                ? ResponseEntity.ok().build()
                 : ResponseEntity.notFound().build();
     }
 
