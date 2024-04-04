@@ -4,25 +4,23 @@ import com.github.plataformadodaleapi.model.recruiter.RecruiterDetalingData;
 import com.github.plataformadodaleapi.model.recruiter.RecruiterModel;
 import com.github.plataformadodaleapi.model.recruiter.RegisterRecruiterDTO;
 import com.github.plataformadodaleapi.model.recruiter.UpdateRecruiterDTO;
-import com.github.plataformadodaleapi.model.student.Student;
+import com.github.plataformadodaleapi.model.skills.SkillRequestDTO;
 import com.github.plataformadodaleapi.model.student.StudentProjection;
 import com.github.plataformadodaleapi.model.student.StudentResponseDTO;
 import com.github.plataformadodaleapi.repository.RecruiterRepository;
-import com.github.plataformadodaleapi.repository.StudentRepository;
 import com.github.plataformadodaleapi.security.SecurityFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RecruiterService {
     private RecruiterRepository recruiterRepository;
-    private StudentRepository studentRepository;
     private PasswordEncoder passwordEncoder;
     private TokenService tokenService;
     private SecurityFilter securityFilter;
@@ -55,37 +53,31 @@ public class RecruiterService {
     public List<StudentResponseDTO> getAllStudents(HttpServletRequest request) {
         Long recruiterId = recoverIdByToken(request);
         List<StudentProjection> results = recruiterRepository.findAllStudents(recruiterId);
-        List<StudentResponseDTO> students = new ArrayList<>();
-
-        for (StudentProjection studentProjection : results) {
-            StudentResponseDTO student = new StudentResponseDTO();
-            student.setId(studentProjection.getId());
-            student.setName(studentProjection.getName());
-            student.setAge(studentProjection.getAge());
-            student.setGcTrail(studentProjection.getGcTrail().getValue());
-            student.setLinkedin(studentProjection.getLinkedin());
-            student.setEmail(studentProjection.getEmail());
-            student.setBiography(studentProjection.getBiography());
-            student.setProfilePicture(studentProjection.getProfilePicture());
-            student.setCourse(studentProjection.getCourse());
-            student.setEducationLevel(studentProjection.getEducationLevel().getValue());
-            student.setCity(studentProjection.getCity());
-            student.setCourseInstitution(studentProjection.getCourseInstitution());
-            student.setYearOfCourseCompletion(studentProjection.getYearOfCourseCompletion());
-            student.setFavorited(studentProjection.getFavorited() == 1);
-            student.setSoftSkills(studentProjection.getSoftSkills());
-            student.setHardSkills(studentProjection.getHardSkills());
-            students.add(student);
-        }
-
-        return students;
+        return convertToStudentResponseDTOList(results);
     }
 
     public List<StudentResponseDTO> getFavoriteStudents(HttpServletRequest request) {
         Long recruiterId = recoverIdByToken(request);
         List<StudentProjection> results = recruiterRepository.findFavoritedStudents(recruiterId);
-        List<StudentResponseDTO> students = new ArrayList<>();
+        return convertToStudentResponseDTOList(results);
+    }
 
+    @Transactional
+    public boolean favoriteOrDisfavorStudent(HttpServletRequest request, Long studentId) {
+        if (recruiterRepository.existStudentById(studentId) == 1) {
+            Long recruiterId = recoverIdByToken(request);
+            if (recruiterRepository.studentIsFavorited(studentId, recruiterId) == 1) {
+                recruiterRepository.disfavorStudentById(studentId, recruiterId);
+            } else {
+                recruiterRepository.favoriteStudentById(studentId, recruiterId);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private List<StudentResponseDTO> convertToStudentResponseDTOList(List<StudentProjection> results) {
+        List<StudentResponseDTO> students = new ArrayList<>();
         for (StudentProjection studentProjection : results) {
             StudentResponseDTO student = new StudentResponseDTO();
             student.setId(studentProjection.getId());
@@ -102,35 +94,21 @@ public class RecruiterService {
             student.setCourseInstitution(studentProjection.getCourseInstitution());
             student.setYearOfCourseCompletion(studentProjection.getYearOfCourseCompletion());
             student.setFavorited(studentProjection.getFavorited() == 1);
-            student.setSoftSkills(studentProjection.getSoftSkills());
-            student.setHardSkills(studentProjection.getHardSkills());
+            List<SkillRequestDTO> softSkills = new ArrayList<>();
+            List<SkillRequestDTO> hardSkills = new ArrayList<>();
+            String[] softSkillsArray = studentProjection.getSoftSkills().split(",");
+            String[] hardSkillsArray = studentProjection.getHardSkills().split(",");
+            for (String skill : softSkillsArray) {
+                softSkills.add(new SkillRequestDTO(skill));
+            }
+            for (String skill : hardSkillsArray) {
+                hardSkills.add(new SkillRequestDTO(skill));
+            }
+            student.setSoftSkills(softSkills);
+            student.setHardSkills(hardSkills);
             students.add(student);
         }
-
         return students;
-    }
-
-    public RecruiterDetalingData favoriteStudent(HttpServletRequest request, Long studentId) {
-        Long recruiterId = recoverIdByToken(request);
-        Optional<RecruiterModel> recruiterOptional = recruiterRepository.findById(recruiterId);
-        if (recruiterOptional.isPresent()) {
-            Optional<Student> studentOptional = studentRepository.findById(studentId);
-            if (studentOptional.isPresent()) {
-                recruiterOptional.get().getFavoriteStudents().add(studentOptional.get());
-                return new RecruiterDetalingData(recruiterRepository.save(recruiterOptional.get()));
-            }
-        }
-        return null;
-    }
-
-    public RecruiterDetalingData disfavorStudent(HttpServletRequest request, Long studentId) {
-        Long recruiterId = recoverIdByToken(request);
-        Optional<RecruiterModel> recruiter = recruiterRepository.findById(recruiterId);
-        if (recruiter.isPresent()) {
-            recruiter.get().getFavoriteStudents().removeIf(student -> student.getId() == studentId);
-            return new RecruiterDetalingData(recruiterRepository.save(recruiter.get()));
-        }
-        return null;
     }
 
     public Long recoverIdByToken(HttpServletRequest request) {
@@ -140,12 +118,10 @@ public class RecruiterService {
 
     @Autowired
     public RecruiterService(RecruiterRepository recruiterRepository,
-                            StudentRepository studentRepository,
                             PasswordEncoder passwordEncoder,
                             TokenService tokenService,
                             SecurityFilter securityFilter) {
         this.recruiterRepository = recruiterRepository;
-        this.studentRepository = studentRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
         this.securityFilter = securityFilter;
