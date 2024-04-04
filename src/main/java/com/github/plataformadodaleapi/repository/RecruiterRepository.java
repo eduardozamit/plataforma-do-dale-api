@@ -37,7 +37,8 @@ public interface RecruiterRepository extends JpaRepository<RecruiterModel, Long>
             " LEFT OUTER JOIN hard_skill AS hs ON shs.hard_skill_id = hs.id" +
             " LEFT OUTER JOIN student_soft_skill AS sss ON s.id = sss.student_id" +
             " LEFT OUTER JOIN soft_skill AS ss ON sss.soft_skill_id = ss.id" +
-            " GROUP BY s.id;", nativeQuery = true)
+            " GROUP BY s.id" +
+            " ORDER BY RAND();", nativeQuery = true)
     List<StudentProjection> findAllStudents(@Param("recruiter_id") Long recruiterId);
 
     @Query(value = "SELECT s.id," +
@@ -53,7 +54,7 @@ public interface RecruiterRepository extends JpaRepository<RecruiterModel, Long>
             "       s.city AS city," +
             "       s.course_institution AS courseInstitution," +
             "       s.year_of_course_completion AS yearOfCourseCompletion," +
-            "       CASE WHEN rs.recruiter_id = :recruiter_id THEN true ELSE false END AS favorited," +
+            "       true AS favorited," +
             "       GROUP_CONCAT(DISTINCT hs.description SEPARATOR ', ') AS hardSkills," +
             "       GROUP_CONCAT(DISTINCT ss.description SEPARATOR ', ') AS softSkills" +
             " FROM student AS s" +
