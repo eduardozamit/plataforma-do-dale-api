@@ -50,18 +50,6 @@ public class RecruiterService {
         recruiterRepository.deleteById(id);
     }
 
-    public List<StudentResponseDTO> getAllStudents(HttpServletRequest request) {
-        Long recruiterId = recoverIdByToken(request);
-        List<StudentProjection> results = recruiterRepository.findAllStudents(recruiterId);
-        return convertToStudentResponseDTOList(results);
-    }
-
-    public List<StudentResponseDTO> getFavoriteStudents(HttpServletRequest request) {
-        Long recruiterId = recoverIdByToken(request);
-        List<StudentProjection> results = recruiterRepository.findFavoritedStudents(recruiterId);
-        return convertToStudentResponseDTOList(results);
-    }
-
     @Transactional
     public boolean favoriteOrDisfavorStudent(HttpServletRequest request, Long studentId) {
         if (recruiterRepository.existStudentById(studentId) == 1) {
@@ -74,6 +62,18 @@ public class RecruiterService {
             return true;
         }
         return false;
+    }
+
+    public List<StudentResponseDTO> getAllStudents(HttpServletRequest request) {
+        Long recruiterId = recoverIdByToken(request);
+        List<StudentProjection> results = recruiterRepository.findAllStudents(recruiterId);
+        return convertToStudentResponseDTOList(results);
+    }
+
+    public List<StudentResponseDTO> getFavoriteStudents(HttpServletRequest request) {
+        Long recruiterId = recoverIdByToken(request);
+        List<StudentProjection> results = recruiterRepository.findFavoritedStudents(recruiterId);
+        return convertToStudentResponseDTOList(results);
     }
 
     private List<StudentResponseDTO> convertToStudentResponseDTOList(List<StudentProjection> results) {
@@ -94,21 +94,23 @@ public class RecruiterService {
             student.setCourseInstitution(studentProjection.getCourseInstitution());
             student.setYearOfCourseCompletion(studentProjection.getYearOfCourseCompletion());
             student.setFavorited(studentProjection.getFavorited() == 1);
-            List<SkillRequestDTO> softSkills = new ArrayList<>();
-            List<SkillRequestDTO> hardSkills = new ArrayList<>();
-            String[] softSkillsArray = studentProjection.getSoftSkills().split(",");
-            String[] hardSkillsArray = studentProjection.getHardSkills().split(",");
-            for (String skill : softSkillsArray) {
-                softSkills.add(new SkillRequestDTO(skill));
-            }
-            for (String skill : hardSkillsArray) {
-                hardSkills.add(new SkillRequestDTO(skill));
-            }
-            student.setSoftSkills(softSkills);
-            student.setHardSkills(hardSkills);
+            student.setSoftSkills(convertSkills(studentProjection.getSoftSkills()));
+            student.setHardSkills(convertSkills(studentProjection.getHardSkills()));
             students.add(student);
         }
         return students;
+    }
+
+    public List<SkillRequestDTO> convertSkills(String skillsString) {
+        List<SkillRequestDTO> skills = new ArrayList<>();
+        if (skillsString != null && !skillsString.isEmpty()) {
+            String[] skillsArray = skillsString.split(",");
+            for (String skill : skillsArray) {
+                SkillRequestDTO skillRequestDTO = new SkillRequestDTO(skill.trim());
+                skills.add(skillRequestDTO);
+            }
+        }
+        return skills;
     }
 
     public Long recoverIdByToken(HttpServletRequest request) {
